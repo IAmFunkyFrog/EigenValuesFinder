@@ -148,11 +148,11 @@ istream& operator>>(istream& in, RationalNum& obj) {
   bool dotExist = false;
   bool validInput = true;
   int virtualDenominator = 1;
-  cin >> inputstr;
+  in >> inputstr;
   for (int i = 0; i < inputstr.size(); i++) {
     char temp = inputstr[i];
     if (temp == '.') {
-      if (dotExist == false && slashExist == false && i != 0) {
+      if (!dotExist && !slashExist && i != 0) {
         dotExist = true;
       }
       else {

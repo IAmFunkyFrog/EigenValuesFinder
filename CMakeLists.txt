@@ -3,4 +3,4 @@ project(EigenValuesFinder)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(EigenValuesFinder main.cpp)
+add_executable(EigenValuesFinder main.cpp libs/InputParser/InputParser.h libs/RationalNum/RationalNum.h libs/RationalNum/RationalNum.cpp libs/InputParser/InputParser.cpp)
