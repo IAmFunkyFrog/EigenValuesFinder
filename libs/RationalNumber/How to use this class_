@@ -1,0 +1,54 @@
+You can use this class in the same way you use "int".
+The following operators are available:
+  + - * /
+  ++ -- 
+  += -= *= /=
+  < > <= >= == !=
+  << >>
+ 
+For example:
+  RationalNum a, b;
+  a = 5;
+  b = a + 7;
+  cin >> a;
+  cout << a;
+  b = 0.75;
+  cout << b;
+  if (a == 5) {
+    a++;
+  }
+
+
+
+
+Output format:
+1.When the denominator is 1, it won't be output by default.
+  For example: 
+      RationalNum a = 7;
+      cout << a;
+    these statements will output "1".
+
+2.When the denominator is not 1, it will be output in "int/int"  format.
+  For example:
+      RationalNum a = 0.25;
+      cout << a;
+    these statements will output "1/4".
+
+Input format:
+1.you can input a fractional number.
+  For example: 1.15  -0.25  is valid.
+2.you can input an integer as usual.
+  For example: -1  125 is valid.
+3.you can input a rational number in "int/int" format.
+  For example: 1/3   -1/5   1/-6  is valid.
+
+Notice:
+1.if the denominator is 0, it's not valid. the program will set the rational number to 0.
+2.if the integer number that need to transfer to rational number is too long, it may fails to transfer, 
+  the rational number will be set to 0.
+3.if the fractional number that need to transfer to rational number is too long, it may fails to transfer,
+  the rational number will be set to 0.
+4.if the input is not valid, the rational number will be set to 0;
+
+
+
