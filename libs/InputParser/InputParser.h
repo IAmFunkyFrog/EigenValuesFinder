@@ -4,10 +4,11 @@
 #include "../RationalNum/RationalNum.h"
 
 typedef struct {
-    int n;
+    unsigned int n;
     RationalNum** matrix;
 } ParsedInput;
 
 ParsedInput* parseInput(string filename);
+void freeParsedInput(ParsedInput* input);
 
 #endif //EIGENVALUESFINDER_INPUTPARSER_H
