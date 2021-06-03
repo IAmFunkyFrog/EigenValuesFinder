@@ -79,6 +79,7 @@ set<RationalNum> findRationalSolutions(Polynomial* polynomial) {
             if(getPolynomialValue(polynomial, x) == 0ll) rationalSolutions.insert(x);
         }
     }
+    if(getPolynomialValue(polynomial, 0ll) == 0ll) rationalSolutions.insert(0ll);
 
     return rationalSolutions;
 }
