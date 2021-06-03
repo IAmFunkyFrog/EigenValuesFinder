@@ -52,6 +52,7 @@ set<long long int> getDivisors(long long int num) {
     for(int i = 1; i * i <= abs(num); i++) {
         if(num % i == 0) divisors.insert(i);
     }
+    divisors.insert(abs(num));
     return divisors;
 }
 
