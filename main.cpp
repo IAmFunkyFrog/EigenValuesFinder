@@ -31,20 +31,20 @@ int main(int argc, char **argv) {
     cout << "Characteristics polynomial:" << endl;
     for (int i = polynomial->degree; i >= 0; i--) {
         if(i > 0) {
-            if(polynomial->coefficients[i] == 1) {
+            if(polynomial->coefficients[i] == 1ll) {
                 cout << "x^" << i << " ";
             }
-            if(polynomial->coefficients[i] == -1) {
+            if(polynomial->coefficients[i] == -1ll) {
                 cout << "- x^" << i << " ";
             }
             else {
-                if(polynomial->coefficients[i] > 0) cout << "+ " << polynomial->coefficients[i] << " " << "x^" << i << " ";
-                else if(polynomial->coefficients[i] < 0) cout << "- " << -polynomial->coefficients[i] << " " << "x^" << i << " ";
+                if(polynomial->coefficients[i] > 0ll) cout << "+ " << polynomial->coefficients[i] << " " << "x^" << i << " ";
+                else if(polynomial->coefficients[i] < 0ll) cout << "- " << -polynomial->coefficients[i] << " " << "x^" << i << " ";
             }
         }
         else if(i == 0) {
-            if(polynomial->coefficients[i] > 0) cout << "+ " << polynomial->coefficients[i];
-            else if(polynomial->coefficients[i] < 0) cout << "- " << -polynomial->coefficients[i];
+            if(polynomial->coefficients[i] > 0ll) cout << "+ " << polynomial->coefficients[i];
+            else if(polynomial->coefficients[i] < 0ll) cout << "- " << -polynomial->coefficients[i];
         }
     }
     cout << endl;

@@ -8,11 +8,11 @@
 using namespace std;
 
 RationalNum getMainMinor(RationalNum** matrix, vector<unsigned int>&rows) {
-    if(rows.empty()) return 1;
+    if(rows.empty()) return 1ll;
 
     vector<unsigned int>permutation;
     for(int i = 0; i < rows.size(); i++) permutation.push_back(i);
-    RationalNum sum = 0;
+    RationalNum sum = 0ll;
     do {
         unsigned int sign = 0;
         for(int i = 0; i < permutation.size() - 1; i++) {
@@ -20,7 +20,7 @@ RationalNum getMainMinor(RationalNum** matrix, vector<unsigned int>&rows) {
                 if(permutation[j] < permutation[i]) sign++;
             }
         }
-        RationalNum msum = 1;
+        RationalNum msum = 1ll;
         for(int i = 0; i < rows.size(); i++) msum *= matrix[rows[i]][rows[permutation[i]]];
         if(sign % 2 == 0) sum += msum;
         else sum -= msum;
@@ -42,7 +42,7 @@ Polynomial* getCharacteristicPolynomial(RationalNum** matrix, unsigned int size)
         }
         polynomial->coefficients[size - rows.size()] += getMainMinor(matrix, rows);
     }
-    for(unsigned int i = 1; i <= polynomial->degree; i += 2) polynomial->coefficients[i] *= -1;
+    for(unsigned int i = 1; i <= polynomial->degree; i += 2) polynomial->coefficients[i] *= -1ll;
 
     return polynomial;
 }
@@ -76,7 +76,7 @@ set<RationalNum> findRationalSolutions(Polynomial* polynomial) {
     for(auto p : pValues) {
         for(auto q : qValues) {
             RationalNum x(p, q);
-            if(getPolynomialValue(polynomial, x) == 0) rationalSolutions.insert(x);
+            if(getPolynomialValue(polynomial, x) == 0ll) rationalSolutions.insert(x);
         }
     }
 
