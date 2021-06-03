@@ -65,12 +65,18 @@ RationalNum getPolynomialValue(Polynomial* polynomial, RationalNum x) {
     return value;
 }
 
-//Находим решение многочлена как дробь p / q, где p - делитель свободного члена, а q - делитель старшего коофицента
+//Находим решение многочлена как дробь p / q, где p - делитель коофицента с наименьшей степенью не равного 0, а q - делитель старшего коофицента
 set<RationalNum> findRationalSolutions(Polynomial* polynomial) {
     long long int commonDenominator = 1;
     for(int i = 0; i <= polynomial->degree; i++) commonDenominator *= polynomial->coefficients[i].getDenominator();
 
-    set<long long int> pValues = getDivisors(polynomial->coefficients[0].getNumerator() * (commonDenominator / polynomial->coefficients[0].getDenominator()));
+    set<long long int> pValues;
+    for(int i = 0; i <= polynomial->degree; i++) {
+        if(polynomial->coefficients[i] != 0ll) {
+            pValues = getDivisors(polynomial->coefficients[i].getNumerator() * (commonDenominator / polynomial->coefficients[0].getDenominator()));
+            break;
+        }
+    }
     set<long long int> qValues = getDivisors(polynomial->coefficients[polynomial->degree].getNumerator() * (commonDenominator / polynomial->coefficients[polynomial->degree].getDenominator()));
 
     set<RationalNum> rationalSolutions;
@@ -78,6 +84,7 @@ set<RationalNum> findRationalSolutions(Polynomial* polynomial) {
         for(auto q : qValues) {
             RationalNum x(p, q);
             if(getPolynomialValue(polynomial, x) == 0ll) rationalSolutions.insert(x);
+            if(getPolynomialValue(polynomial, -x) == 0ll) rationalSolutions.insert(-x);
         }
     }
     if(getPolynomialValue(polynomial, 0ll) == 0ll) rationalSolutions.insert(0ll);
