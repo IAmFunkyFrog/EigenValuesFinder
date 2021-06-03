@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
             if(polynomial->coefficients[i] == 1ll) {
                 cout << "x^" << i << " ";
             }
-            if(polynomial->coefficients[i] == -1ll) {
+            else if(polynomial->coefficients[i] == -1ll) {
                 cout << "- x^" << i << " ";
             }
             else {
