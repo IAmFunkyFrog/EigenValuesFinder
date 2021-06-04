@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
     Polynomial *polynomial = getCharacteristicPolynomial(input->matrix, input->n);
 
     cout << "Characteristics polynomial:" << endl;
-    cout << "F(x) = " << endl;
+    cout << "F(x) = ";
     for (int i = polynomial->degree; i >= 0; i--) {
         if(i > 0) {
             if(polynomial->coefficients[i] == 1ll) {
