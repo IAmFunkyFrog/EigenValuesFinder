@@ -50,7 +50,10 @@ Polynomial* getCharacteristicPolynomial(RationalNum** matrix, unsigned int size)
 set<long long int> getDivisors(long long int num) {
     set<long long int> divisors;
     for(int i = 1; i * i <= abs(num); i++) {
-        if(num % i == 0) divisors.insert(i);
+        if(num % i == 0) {
+            divisors.insert(i);
+            divisors.insert(num / i);
+        }
     }
     divisors.insert(abs(num));
     return divisors;
