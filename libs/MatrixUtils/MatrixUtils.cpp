@@ -91,3 +91,72 @@ set<RationalNum> findRationalSolutions(Polynomial* polynomial) {
 
     return rationalSolutions;
 }
+
+RationalNum** getGaussForm(RationalNum** matrix, unsigned int size) {
+    RationalNum** gaussForm = new RationalNum* [size];
+    for(int i = 0; i < size; i++) {
+        gaussForm[i] = new RationalNum [size];
+        for(int j = 0; j < size; j++) gaussForm[i][j] = matrix[i][j];
+    }
+    for(int i = 0; i < size; i++) {
+        for(int j = i; j < size; j++) {
+            if(gaussForm[j][i] != 0ll) {
+                swap(gaussForm[i], gaussForm[j]);
+                break;
+            }
+        }
+        if(gaussForm[i][i] == 0ll) continue;
+        RationalNum m = gaussForm[i][i];
+        for(int j = 0; j < size; j++) {
+            gaussForm[i][j] /= m;
+        }
+        for(int j = 0; j < size; j++) {
+            if(j != i) {
+                RationalNum d = gaussForm[j][i];
+                for(int k = 0; k < size; k++) gaussForm[j][k] -= gaussForm[i][k] * d;
+            }
+        }
+    }
+    return gaussForm;
+}
+
+set<vector<RationalNum>> getEigenSpaceBasis(RationalNum** matrix, unsigned int size, RationalNum eigenValue) {
+    RationalNum** editedMatrix = new RationalNum* [size];
+    for(int i = 0; i < size; i++) {
+        editedMatrix[i] = new RationalNum [size];
+        for(int j = 0; j < size; j++) editedMatrix[i][j] = matrix[i][j];
+    }
+    for(int i = 0; i < size; i++) editedMatrix[i][i] -= eigenValue;
+
+    RationalNum** gaussForm = getGaussForm(editedMatrix, size);
+    set<vector<RationalNum>> basis;
+
+    set<unsigned int> basisFields;
+    for(int i = 0; i < size; i++) {
+        for(int j = 0; j < size; j++) {
+            if(gaussForm[i][j] != 0ll) {
+                basisFields.insert(j);
+                break;
+            }
+        }
+    }
+    for(unsigned int k = 0; k < size; k++) {
+        if(basisFields.find(k) != basisFields.end()) continue;
+        vector<RationalNum> basisVector(size);
+        for(int j = 0; j < size; j++) {
+            if(gaussForm[j][j] != 0ll) basisVector[j] = -gaussForm[j][k];
+            else basisVector[j] = 0ll;
+        }
+        basisVector[k] = 1ll;
+        basis.insert(basisVector);
+    }
+
+    for(int i = 0; i < size; i++) {
+        delete[] gaussForm[i];
+        delete[] editedMatrix[i];
+    }
+    delete[] gaussForm;
+    delete[] editedMatrix;
+
+    return basis;
+}

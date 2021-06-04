@@ -28,7 +28,7 @@ ParsedInput* parseInput(string filename) {
         for(int j = 0; j < input->n; j++) {
             if(iss.eof()) {
                 for(int k = 0; k <= i; k++) delete[] input->matrix[i];
-                delete input->matrix;
+                delete[] input->matrix;
                 delete input;
                 return nullptr;
             }
@@ -41,5 +41,5 @@ ParsedInput* parseInput(string filename) {
 
 void freeParsedInput(ParsedInput* input) {
     for(int i = 0; i < input->n; i++) delete[] input->matrix[i];
-    delete input->matrix;
+    delete[] input->matrix;
 }

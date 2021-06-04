@@ -50,9 +50,20 @@ int main(int argc, char **argv) {
     cout << endl;
 
     cout << "Rational eigenvalues: " << endl;
+    set<RationalNum> eigenValues = findRationalSolutions(polynomial);
+
     int i = 1;
-    for(auto solution : findRationalSolutions(polynomial)) {
-        cout << "x_" << i++ << " = " << solution << endl;
+    for(auto eigenValue : eigenValues) {
+        cout << "x_" << i++ << " = " << eigenValue << endl;
+    }
+
+    for(auto eigenValue : eigenValues) {
+        set<vector<RationalNum>> basis = getEigenSpaceBasis(input->matrix, input->n, eigenValue);
+        cout << "Eigen value: " << eigenValue << endl;
+        for(auto vector : basis) {
+            for(auto x : vector) cout << x << " ";
+            cout << endl;
+        }
     }
 
     return 0;
