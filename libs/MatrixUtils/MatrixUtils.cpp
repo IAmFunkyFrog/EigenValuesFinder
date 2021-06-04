@@ -98,6 +98,7 @@ RationalNum** getGaussForm(RationalNum** matrix, unsigned int size) {
         gaussForm[i] = new RationalNum [size];
         for(int j = 0; j < size; j++) gaussForm[i][j] = matrix[i][j];
     }
+    //прямой ход
     for(int i = 0; i < size; i++) {
         for(int j = i; j < size; j++) {
             if(gaussForm[j][i] != 0ll) {
@@ -110,11 +111,9 @@ RationalNum** getGaussForm(RationalNum** matrix, unsigned int size) {
         for(int j = 0; j < size; j++) {
             gaussForm[i][j] /= m;
         }
-        for(int j = 0; j < size; j++) {
-            if(j != i) {
-                RationalNum d = gaussForm[j][i];
-                for(int k = 0; k < size; k++) gaussForm[j][k] -= gaussForm[i][k] * d;
-            }
+        for(int j = i + 1; j < size; j++) {
+            RationalNum d = gaussForm[j][i];
+            for(int k = 0; k < size; k++) gaussForm[j][k] -= gaussForm[i][k] * d;
         }
     }
     return gaussForm;
@@ -143,11 +142,21 @@ set<vector<RationalNum>> getEigenSpaceBasis(RationalNum** matrix, unsigned int s
     for(unsigned int k = 0; k < size; k++) {
         if(basisFields.find(k) != basisFields.end()) continue;
         vector<RationalNum> basisVector(size);
-        for(int j = 0; j < size; j++) {
-            if(gaussForm[j][j] != 0ll) basisVector[j] = -gaussForm[j][k];
-            else basisVector[j] = 0ll;
-        }
         basisVector[k] = 1ll;
+        for(int i = 0; i < size; i++) {
+            int cur = size;
+            for(int j = 0; j < size; j++) {
+                if(gaussForm[size - i - 1][j] != 0ll) {
+                    cur = j;
+                    break;
+                }
+            }
+            if(cur == size) continue;
+            for(int j = cur + 1; j < size; j++) {
+                if(basisFields.find(j) != basisFields.end() || j == k) basisVector[cur] += basisVector[j] * gaussForm[size - i - 1][j];
+            }
+            basisVector[cur] = -basisVector[cur] / gaussForm[size - i - 1][cur];
+        }
         basis.insert(basisVector);
     }
 
