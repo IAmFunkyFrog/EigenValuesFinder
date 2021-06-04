@@ -33,6 +33,10 @@ void simplifyFun(long long int &a, long long int &b) {
     long long int tempD = b;
     long long int small, temp;
     vector<long long int> factorSet;
+    if(tempD < 0) {
+        tempN = -tempN;
+        tempD = -tempD;
+    }
     if (tempN == tempD) {
         a = 1;
         b = 1;
