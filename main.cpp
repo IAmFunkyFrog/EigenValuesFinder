@@ -29,6 +29,7 @@ int main(int argc, char **argv) {
     Polynomial *polynomial = getCharacteristicPolynomial(input->matrix, input->n);
 
     cout << "Characteristics polynomial:" << endl;
+    cout << "F(x) = " << endl;
     for (int i = polynomial->degree; i >= 0; i--) {
         if(i > 0) {
             if(polynomial->coefficients[i] == 1ll) {
@@ -52,18 +53,24 @@ int main(int argc, char **argv) {
     cout << "Rational eigenvalues: " << endl;
     set<RationalNum> eigenValues = findRationalSolutions(polynomial);
 
-    int i = 1;
+    int n = 1;
     for(auto eigenValue : eigenValues) {
-        cout << "x_" << i++ << " = " << eigenValue << endl;
+        cout << "x_" << n++ << " = " << eigenValue << endl;
     }
 
+    cout << "Eigenspaces: " << endl;
     for(auto eigenValue : eigenValues) {
         set<vector<RationalNum>> basis = getEigenSpaceBasis(input->matrix, input->n, eigenValue);
-        cout << "Eigen value: " << eigenValue << endl;
-        for(auto vector : basis) {
-            for(auto x : vector) cout << x << " ";
-            cout << endl;
+        cout << "L(" << eigenValue << ") = span ( ";
+        for(const auto& vector : basis) {
+            cout << "(";
+            for(int i = 0; i < vector.size(); i++) {
+                cout << vector[i];
+                if(i < vector.size() - 1) cout << ", ";
+            }
+            cout << ") ";
         }
+        cout << ")" << endl;
     }
 
     return 0;
