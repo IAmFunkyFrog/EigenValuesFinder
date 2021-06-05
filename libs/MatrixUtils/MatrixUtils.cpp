@@ -101,7 +101,6 @@ RationalNum** getGaussForm(RationalNum** matrix, unsigned int size) {
         gaussForm[i] = new RationalNum [size];
         for(int j = 0; j < size; j++) gaussForm[i][j] = matrix[i][j];
     }
-    //прямой ход
     for(int i = 0; i < size; i++) {
         for(int j = i; j < size; j++) {
             if(gaussForm[j][i] != 0ll) {
@@ -171,4 +170,38 @@ set<vector<RationalNum>> getEigenSpaceBasis(RationalNum** matrix, unsigned int s
     delete[] editedMatrix;
 
     return basis;
+}
+
+RationalNum** getInverseMatrix(RationalNum** matrix, unsigned int size) {
+    RationalNum** inverse = new RationalNum* [size];
+    for(int i = 0; i < size; i++) {
+        inverse[i] = new RationalNum [size * 2];
+        for(int j = 0; j < size; j++) inverse[i][j] = matrix[i][j];
+    }
+    for(int i = 0; i < size; i++) inverse[i][size + i] = 1ll;
+    for(int i = 0; i < size; i++) {
+        for(int j = i; j < size; j++) {
+            if(inverse[j][i] != 0ll) {
+                swap(inverse[i], inverse[j]);
+                break;
+            }
+        }
+        RationalNum m = inverse[i][i];
+        for(int j = 0; j < size * 2; j++) {
+            inverse[i][j] /= m;
+        }
+        for(int j = 0; j < size; j++) {
+            if(j == i) continue;
+            RationalNum d = inverse[j][i];
+            for(int k = 0; k < size * 2; k++) inverse[j][k] -= inverse[i][k] * d;
+        }
+    }
+    RationalNum** done = new RationalNum* [size];
+    for(int i = 0; i < size; i++) {
+        done[i] = new RationalNum [size];
+        for(int j = 0; j < size; j++) done[i][j] = inverse[i][j + size];
+        delete [] inverse[i];
+    }
+    delete [] inverse;
+    return done;
 }

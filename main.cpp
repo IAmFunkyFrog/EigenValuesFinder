@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <map>
 #include "libs/InputParser/InputParser.h"
 #include "libs/MatrixUtils/MatrixUtils.h"
 
@@ -53,14 +54,16 @@ int main(int argc, char **argv) {
     cout << "Rational eigenvalues: " << endl;
     set<RationalNum> eigenValues = findRationalSolutions(polynomial);
 
-    int n = 1;
+    int m = 1;
     for(auto eigenValue : eigenValues) {
-        cout << "x_" << n++ << " = " << eigenValue << endl;
+        cout << "x_" << m++ << " = " << eigenValue << endl;
     }
 
+    map<RationalNum, set<vector<RationalNum>>> eigenSpaces;
     cout << "Eigenspaces: " << endl;
     for(auto eigenValue : eigenValues) {
         set<vector<RationalNum>> basis = getEigenSpaceBasis(input->matrix, input->n, eigenValue);
+        eigenSpaces[eigenValue] = basis;
         cout << "L(" << eigenValue << ") = span ( ";
         for(const auto& vector : basis) {
             cout << "(";
@@ -72,6 +75,62 @@ int main(int argc, char **argv) {
         }
         cout << ")" << endl;
     }
+
+    int basisVectorsCount = 0;
+    for(const auto& space : eigenSpaces) basisVectorsCount += space.second.size();
+
+    if(basisVectorsCount < input->n) {
+        cout << "Not enough eigen vectors to make eigen basis" << endl;
+        return 0;
+    }
+
+    RationalNum** D = new RationalNum* [input->n];
+    RationalNum** C = new RationalNum* [input->n];
+    for(int i = 0; i < input->n; i++) {
+        D[i] = new RationalNum [input->n];
+        C[i] = new RationalNum [input->n];
+    }
+
+    m = 0;
+    for(const auto& space : eigenSpaces) {
+        for(auto basisVector : space.second) {
+            D[m][m] = space.first;
+            for (int j = 0; j < input->n; j++) C[j][m] = basisVector[j];
+            m++;
+        }
+    }
+
+    RationalNum** C1 = getInverseMatrix(C, input->n);
+
+    cout << "Matrix decomposition: " << endl;
+    cout << "A = C D C^(-1)" << endl;
+    cout << "C:" << endl;
+    for(int i = 0; i < input->n; i++) {
+        for(int j = 0; j < input->n; j++) cout << C[i][j] << " ";
+        cout << endl;
+    }
+    cout << "D:" << endl;
+    for(int i = 0; i < input->n; i++) {
+        for(int j = 0; j < input->n; j++) cout << D[i][j] << " ";
+        cout << endl;
+    }
+    cout << "C^(-1):" << endl;
+    for(int i = 0; i < input->n; i++) {
+        for(int j = 0; j < input->n; j++) cout << C1[i][j] << " ";
+        cout << endl;
+    }
+
+    //Освобождение памяти
+    for(int i =0 ; i < input->n; i++) {
+        delete [] input->matrix[i];
+        delete [] D[i];
+        delete [] C[i];
+        delete [] C1[i];
+    }
+    delete[] input->matrix;
+    delete [] D;
+    delete [] C;
+    delete [] C1;
 
     return 0;
 }
